@@ -1,0 +1,61 @@
+package dataman;
+
+public class AnswerChecker {
+    private String currentOperation = "";
+    private double firstNumber = 0;
+    private double secondNumber = 0;
+    private int wrongAttempts = 0;
+
+    public String processInput(String input) {
+    	if (input.matches("[0-9]+")) {
+    	    if (currentOperation.isEmpty()) {
+    	        firstNumber = Double.parseDouble(input);
+    	        return input;
+    	    } else {
+    	        secondNumber = Double.parseDouble(input);
+    	        return " " + input;
+    	    }
+        } else if (input.equals("+") || input.equals("-") || input.equals("x") || input.equals("÷")) {
+            currentOperation = input;
+            return " " + input + " ";
+        } else if (input.equals("=")) {
+            wrongAttempts = 0;
+            return input + " ";
+        } else {
+            return "";  // For now, ignore other buttons
+        }
+    }
+
+    public boolean checkAnswer(double answer) {
+        double result = 0;
+        switch (currentOperation) {
+            case "+":
+                result = firstNumber + secondNumber;
+                break;
+            case "-":
+                result = firstNumber - secondNumber;
+                break;
+            case "x":
+                result = firstNumber * secondNumber;
+                break;
+            case "÷":
+                if (secondNumber != 0) {
+                    result = firstNumber / secondNumber;
+                }
+                break;
+        }
+        return answer == result;
+    }
+
+    public void incrementWrongAttempts() {
+        wrongAttempts++;
+    }
+
+    public int getWrongAttempts() {
+        return wrongAttempts;
+    }
+
+    public String getCurrentEquation() {
+        return firstNumber + " " + currentOperation + " " + secondNumber + " = ";
+    }
+}

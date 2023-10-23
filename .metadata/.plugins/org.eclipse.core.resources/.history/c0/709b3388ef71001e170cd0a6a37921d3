@@ -1,0 +1,44 @@
+// File: DatamanGUI.java
+
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DatamanGUI {
+    private JFrame frame;
+    private ButtonPanel buttonPanel;
+    private DisplayPanel displayPanel;
+    private LightIndicator lightIndicator;
+    private AnswerChecker answerChecker;
+
+    public DatamanGUI() {
+        frame = new JFrame("Dataman Math Game");
+        frame.setSize(400, 600);  // Made it taller
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        buttonPanel = new ButtonPanel(e -> handleButtonPress(e.getActionCommand()));
+        displayPanel = new DisplayPanel();
+        lightIndicator = new LightIndicator();
+        answerChecker = new AnswerChecker();
+
+        frame.add(displayPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(lightIndicator, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private void handleButtonPress(String command) {
+        String text = displayPanel.getDisplayText();
+        String response = answerChecker.processInput(command);
+        displayPanel.updateDisplay(text + response);
+        // Check answer if "=" was pressed...
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DatamanGUI());
+    }
+}
+

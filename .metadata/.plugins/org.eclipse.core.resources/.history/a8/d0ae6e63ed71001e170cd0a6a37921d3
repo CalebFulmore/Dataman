@@ -1,0 +1,39 @@
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DatamanGUI {
+
+    private JFrame frame;
+    private ButtonPanel buttonPanel;
+    private DisplayPanel displayPanel;
+    private LightIndicator lightIndicator;
+    private AnswerChecker answerChecker;
+
+    public DatamanGUI() {
+        frame = new JFrame("Dataman Math Game");
+        frame.setSize(400, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        buttonPanel = new ButtonPanel(e -> handleButtonPress(e.getActionCommand()));
+        displayPanel = new DisplayPanel();
+        lightIndicator = new LightIndicator();
+        answerChecker = new AnswerChecker();  // Logic and methods to integrate will come here
+
+        frame.add(displayPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(lightIndicator, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private void handleButtonPress(String command) {
+        // Based on command, decide how the AnswerChecker should respond and then update the DisplayPanel and LightIndicator.
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DatamanGUI());
+    }
+}

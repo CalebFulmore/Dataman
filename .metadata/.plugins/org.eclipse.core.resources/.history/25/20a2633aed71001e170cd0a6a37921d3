@@ -1,0 +1,20 @@
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DisplayPanel extends JPanel {
+    private JTextField displayField;
+
+    public DisplayPanel() {
+        setLayout(new BorderLayout());
+        displayField = new JTextField();
+        displayField.setEditable(false);
+        add(displayField, BorderLayout.CENTER);
+    }
+
+    public void updateDisplay(String text) {
+        displayField.setText(text);
+    }
+}
+

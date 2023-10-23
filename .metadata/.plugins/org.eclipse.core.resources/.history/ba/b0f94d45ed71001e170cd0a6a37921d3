@@ -1,0 +1,38 @@
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class LightIndicator extends JPanel {
+    private JLabel greenLight, redLight;
+
+    public LightIndicator() {
+        greenLight = new JLabel("    ");
+        greenLight.setOpaque(true);
+        greenLight.setBackground(Color.GRAY);
+
+        redLight = new JLabel("    ");
+        redLight.setOpaque(true);
+        redLight.setBackground(Color.GRAY);
+
+        add(new JLabel("Green: "));
+        add(greenLight);
+        add(new JLabel("Red: "));
+        add(redLight);
+    }
+
+    public void activateGreenLight() {
+        greenLight.setBackground(Color.GREEN);
+        redLight.setBackground(Color.GRAY);
+    }
+
+    public void activateRedLight() {
+        redLight.setBackground(Color.RED);
+        greenLight.setBackground(Color.GRAY);
+    }
+
+    public void resetLights() {
+        greenLight.setBackground(Color.GRAY);
+        redLight.setBackground(Color.GRAY);
+    }
+}

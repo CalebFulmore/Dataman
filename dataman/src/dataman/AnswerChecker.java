@@ -1,0 +1,106 @@
+package dataman;
+
+public class AnswerChecker {
+    private String currentOperation = "";
+    private double firstNumber = 0;
+    private double secondNumber = 0;
+    private int wrongAttempts = 0;
+    private boolean waitingForAnswer = false;
+    private int remainder = 0;
+
+    public String processInput(String input) {
+        if (waitingForAnswer) {
+            return input;
+        }
+
+        if (input.matches("[0-9]+")) {
+            if (currentOperation.isEmpty()) {
+                firstNumber = Double.parseDouble(input);
+                return input;
+            } else {
+                secondNumber = Double.parseDouble(input);
+                return " " + input;
+            }
+        } else if (input.equals("+") || input.equals("-") || input.equals("x") || input.equals("÷")) {
+            currentOperation = input;
+            return " " + input + " ";
+        } else if (input.equals("=")) {
+            return input + " ";
+        } else {
+            return "";  // For now, ignore other buttons
+        }
+    }
+
+    public String getDivisionWithRemainder() {
+        if (currentOperation.equals("÷") && secondNumber != 0) {
+            int quotient = (int) firstNumber / (int) secondNumber;
+            remainder = (int) firstNumber % (int) secondNumber;
+            return quotient + " R" + remainder;
+        }
+        return "";
+    }
+
+    public boolean checkAnswer(double answer) {
+        double result = 0;
+        switch (currentOperation) {
+            case "+":
+                result = firstNumber + secondNumber;
+                break;
+            case "-":
+                result = firstNumber - secondNumber;
+                break;
+            case "x":
+                result = firstNumber * secondNumber;
+                break;
+            case "÷":
+                if (secondNumber != 0) {
+                    result = firstNumber / secondNumber;
+                    int quotient = (int) result;
+                    return answer == quotient;
+                }
+                break;
+        }
+        return answer == result;
+    }
+
+    public void reset() {
+        currentOperation = "";
+        firstNumber = 0;
+        secondNumber = 0;
+        wrongAttempts = 0;
+        waitingForAnswer = false;
+        remainder = 0;
+    }
+
+    public void incrementWrongAttempts() {
+        wrongAttempts++;
+    }
+
+    public int getWrongAttempts() {
+        return wrongAttempts;
+    }
+
+    public String getCurrentEquation() {
+        return firstNumber + " " + currentOperation + " " + secondNumber + " = ";
+    }
+
+    public double getFirstNumber() {
+        return firstNumber;
+    }
+
+    public double getSecondNumber() {
+        return secondNumber;
+    }
+
+    public String getCurrentOperation() {
+        return currentOperation;
+    }
+
+    public boolean isWaitingForAnswer() {
+        return waitingForAnswer;
+    }
+
+    public void setWaitingForAnswer(boolean waiting) {
+        this.waitingForAnswer = waiting;
+    }
+}

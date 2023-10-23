@@ -1,0 +1,33 @@
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DisplayPanel extends JPanel {
+    private JTextField displayField;
+
+    public DisplayPanel() {
+        setLayout(new BorderLayout());
+
+        // Adjusting font size
+        Font currentFont = displayField.getFont();
+        Font newFont = currentFont.deriveFont(Font.PLAIN, 36); // you can adjust the font size (36 in this case) as per your requirement
+        displayField.setFont(newFont);
+
+        displayField = new JTextField();
+        displayField.setEditable(false);
+
+        // Adjusting preferred size to make it taller
+        displayField.setPreferredSize(new Dimension(displayField.getPreferredSize().width, 60)); // Adjust 60 to your preference for height
+
+        add(displayField, BorderLayout.CENTER);
+    }
+
+    public void updateDisplay(String text) {
+        displayField.setText(text);
+    }
+
+    public String getDisplayText() {
+        return displayField.getText();
+    }
+}

@@ -1,0 +1,150 @@
+package dataman;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class DatamanGUI {
+
+    private JFrame frame;
+    private JTextField display;
+    private JPanel mainPanel, lightPanel;
+    private JButton powerButton, equalsButton;
+    private JLabel greenLight, redLight;
+    private JButton[] numberButtons;
+    private JButton addButton, subtractButton, multiplyButton, divideButton;
+    private double currentNumber = 0;
+    private String currentOperation = "";
+
+    public DatamanGUI() {
+        frame = new JFrame("Dataman Math Game");
+        frame.setSize(400, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        // Setup the display
+        display = new JTextField();
+        display.setEditable(false);
+        frame.add(display, BorderLayout.NORTH);
+
+        // Setup the main panel with buttons
+        mainPanel = new JPanel(new GridLayout(6, 4));  // 6x4 grid layout for 24 buttons
+
+        // Power and equals buttons
+        powerButton = new JButton("Power");
+        equalsButton = new JButton("=");
+
+        // Math operations buttons
+        addButton = new JButton("+");
+        subtractButton = new JButton("-");
+        multiplyButton = new JButton("x");
+        divideButton = new JButton("÷");
+
+        addButton.addActionListener(e -> setOperation("+"));
+        subtractButton.addActionListener(e -> setOperation("-"));
+        multiplyButton.addActionListener(e -> setOperation("x"));
+        divideButton.addActionListener(e -> setOperation("÷"));
+
+        equalsButton.addActionListener(e -> computeResult());
+
+        // Number buttons
+        numberButtons = new JButton[10];
+        for (int i = 0; i < 10; i++) {
+            final int num = i;  // For use in lambda
+            numberButtons[i] = new JButton(String.valueOf(i));
+            numberButtons[i].addActionListener(e -> {
+                if ("=".equals(display.getText())) {
+                    display.setText("");
+                }
+                display.setText(display.getText() + num);
+            });
+            mainPanel.add(numberButtons[i]);
+        }
+
+
+
+        // Add main buttons to mainPanel
+        mainPanel.add(powerButton);
+        mainPanel.add(equalsButton);
+        mainPanel.add(addButton);
+        mainPanel.add(subtractButton);
+        mainPanel.add(multiplyButton);
+        mainPanel.add(divideButton);
+
+        // Additional buttons
+        for (int i = 0; i < 8; i++) {
+            JButton additionalButton = new JButton("BTN" + (i + 1)); // Placeholder names for now
+            mainPanel.add(additionalButton);
+            // You can add action listeners to these buttons if needed
+        }
+
+        frame.add(mainPanel, BorderLayout.CENTER);
+
+        // Setup light indicators
+        lightPanel = new JPanel();
+        greenLight = new JLabel("    ");  // Placeholder for Green light
+        greenLight.setOpaque(true);
+        greenLight.setBackground(Color.GRAY);  // Default color
+
+        redLight = new JLabel("    ");  // Placeholder for Red light
+        redLight.setOpaque(true);
+        redLight.setBackground(Color.GRAY);  // Default color
+
+        lightPanel.add(new JLabel("Green: "));
+        lightPanel.add(greenLight);
+        lightPanel.add(new JLabel("Red: "));
+        lightPanel.add(redLight);
+
+        frame.add(lightPanel, BorderLayout.SOUTH);
+
+        // Add action listeners
+        powerButton.addActionListener(e -> turnOn());
+
+        // Set the frame visible after adding all components
+        frame.setVisible(true);
+    }
+
+    private void setOperation(String operation) {
+        currentNumber = Double.parseDouble(display.getText());
+        display.setText("");
+        currentOperation = operation;
+    }
+
+    private void computeResult() {
+        double secondNumber = Double.parseDouble(display.getText());
+        double result = 0;
+
+        switch (currentOperation) {
+            case "+":
+                result = currentNumber + secondNumber;
+                break;
+            case "-":
+                result = currentNumber - secondNumber;
+                break;
+            case "x":
+                result = currentNumber * secondNumber;
+                break;
+            case "÷":
+                result = currentNumber / secondNumber;
+                break;
+        }
+
+        display.setText(String.valueOf(result));
+        currentOperation = "";
+    }
+
+    private void turnOn() {
+    	display.setText("");
+        currentNumber = 0;
+        currentOperation = "";
+        // Reset lights
+        greenLight.setBackground(Color.GRAY);
+        redLight.setBackground(Color.GRAY);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DatamanGUI());
+    }
+}
+
+

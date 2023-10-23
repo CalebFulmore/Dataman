@@ -1,0 +1,7 @@
+package dataman;
+
+public class AnswerChecker {
+    // The states you previously mentioned and the corresponding methods will go here.
+    // It'll handle the math logic, state transitions, and verification.
+    // You can integrate it with DatamanGUI to handle user input and feedback.
+}

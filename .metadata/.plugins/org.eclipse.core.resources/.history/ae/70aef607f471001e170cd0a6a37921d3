@@ -1,0 +1,122 @@
+package dataman;
+
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+public class DatamanGUI {
+    private JFrame frame;
+    private ButtonPanel buttonPanel;
+    private DisplayPanel displayPanel;
+    private LightIndicator lightIndicator;
+    private AnswerChecker answerChecker;
+
+    public DatamanGUI() {
+        frame = new JFrame("Dataman Math Game");
+        frame.setSize(400, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        answerChecker = new AnswerChecker();
+        buttonPanel = new ButtonPanel(e -> handleButtonPress(e.getActionCommand()));
+        displayPanel = new DisplayPanel();
+        lightIndicator = new LightIndicator();
+
+        frame.add(displayPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(lightIndicator, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private void handleButtonPress(String command) {
+        if (command.equals("ON/UserEntry")) {
+            answerChecker.setWaitingForAnswer(false);
+            displayPanel.updateDisplay("=");
+            lightIndicator.resetLights();
+            return;
+        }
+        if (command.equals("OFF")) {
+            displayPanel.updateDisplay("");
+            lightIndicator.resetLights();
+            answerChecker.setWaitingForAnswer(false);
+            return;
+        }
+
+        if (command.equals("=")) {
+            answerChecker.setWaitingForAnswer(true);
+            displayPanel.updateDisplay(answerChecker.getCurrentEquation());
+            return;
+        } 
+
+        if (command.equals("GO") && answerChecker.isWaitingForAnswer()) {
+            checkAnswer();
+            return;
+        }
+
+        String response = answerChecker.processInput(command);
+        displayPanel.updateDisplay(displayPanel.getDisplayText() + response);
+    }
+
+    private void checkAnswer() {
+        String equation = answerChecker.getCurrentEquation();
+        String[] parts = displayPanel.getDisplayText().split("=");
+        if (parts.length > 1) {
+            try {
+            	
+                double providedAnswer = Double.parseDouble(parts[1].trim());
+                if (answerChecker.checkAnswer(providedAnswer)) {
+                    lightIndicator.activateGreenLight();
+                    answerChecker.setWaitingForAnswer(false);
+                } else {
+                    lightIndicator.activateRedLight();
+                    answerChecker.incrementWrongAttempts();
+                    if (answerChecker.getWrongAttempts() >= 2) {
+                        answerChecker.setWaitingForAnswer(false);
+                        displayPanel.updateDisplay(equation + calculateActualResult());
+                    } else {
+                        displayPanel.updateDisplay(equation);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                lightIndicator.activateRedLight();
+            }
+            
+            if (answerChecker.getWrongAttempts() >= 2) {
+                answerChecker.setWaitingForAnswer(false);
+                if (answerChecker.getCurrentOperation().equals("÷")) {
+                    displayPanel.updateDisplay(equation + answerChecker.getDivisionWithRemainder());
+                } else {
+                    displayPanel.updateDisplay(equation + calculateActualResult());
+                }
+            } else {
+                displayPanel.updateDisplay(equation);
+            }
+        }
+    }
+
+    private String calculateActualResult() {
+        double result = 0;
+        switch (answerChecker.getCurrentOperation()) {
+            case "+":
+                result = answerChecker.getFirstNumber() + answerChecker.getSecondNumber();
+                break;
+            case "-":
+                result = answerChecker.getFirstNumber() - answerChecker.getSecondNumber();
+                break;
+            case "x":
+                result = answerChecker.getFirstNumber() * answerChecker.getSecondNumber();
+                break;
+            case "÷":
+                if (answerChecker.getSecondNumber() != 0) {
+                    result = answerChecker.getFirstNumber() / answerChecker.getSecondNumber();
+                }
+                break;
+        }
+        return String.valueOf(result);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DatamanGUI());
+    }
+}
