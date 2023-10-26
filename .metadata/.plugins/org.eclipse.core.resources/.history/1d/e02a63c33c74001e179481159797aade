@@ -27,12 +27,12 @@ public class DisplayPanel extends JPanel {
     }
 
     private JTextField createDisplayField() {
-        JTextField field = new JTextField(5); // Increase the field width
+        JTextField field = new JTextField();
         field.setEditable(false);
         Font currentFont = field.getFont();
         Font newFont = currentFont.deriveFont(Font.PLAIN, 36);
         field.setFont(newFont);
-        field.setHorizontalAlignment(JTextField.CENTER); // Center align the text
+        field.setPreferredSize(new Dimension(field.getPreferredSize().width, 60));
         return field;
     }
 

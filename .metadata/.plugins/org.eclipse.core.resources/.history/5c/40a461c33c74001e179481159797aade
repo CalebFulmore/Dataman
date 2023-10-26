@@ -90,12 +90,10 @@ public class AnswerChecker {
 
     public void incrementProblemsAttempted() {
         problemsAttempted++;
-        DatamanGUI.getInstance().updateScoreDisplay();
     }
 
     public void incrementProblemsCorrect() {
         problemsCorrect++;
-        DatamanGUI.getInstance().updateScoreDisplay();
     }
 
     public void incrementWrongAttempts() {

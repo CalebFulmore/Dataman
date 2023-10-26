@@ -67,7 +67,6 @@ public class DatamanGUI {
         }
         if (command.equals("Number Guesser")) {
             answerChecker.setWaitingForAnswer(false);
-            answerChecker.reset();  // Reset the AnswerChecker state here too
             displayPanel.updateDisplay("=");
             lightIndicator.resetLights();
             return;
@@ -147,12 +146,6 @@ public class DatamanGUI {
         }
         return String.valueOf(result);
     }
-    
-    public void updateScoreDisplay() {
-        // Assuming displayPanel has a method to update the score
-        displayPanel.updateScore(answerChecker.getProblemsAttempted(), answerChecker.getProblemsCorrect());
-    }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> DatamanGUI.getInstance());

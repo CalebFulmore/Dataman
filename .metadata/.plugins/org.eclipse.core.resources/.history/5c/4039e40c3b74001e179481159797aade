@@ -7,8 +7,6 @@ public class AnswerChecker {
     private int wrongAttempts = 0;
     private boolean waitingForAnswer = false;
     private int remainder = 0;
-    private int problemsAttempted = 0;
-    private int problemsCorrect = 0;
 
     public String processInput(String input) {
         if (waitingForAnswer) {
@@ -62,12 +60,6 @@ public class AnswerChecker {
                 }
                 break;
         }
-        
-        if(answer == result) {
-            incrementProblemsCorrect();
-        }
-        incrementProblemsAttempted();
-
         return answer == result;
     }
 
@@ -78,24 +70,6 @@ public class AnswerChecker {
         wrongAttempts = 0;
         waitingForAnswer = false;
         remainder = 0;
-    }
-    
-    public int getProblemsAttempted() {
-        return problemsAttempted;
-    }
-
-    public int getProblemsCorrect() {
-        return problemsCorrect;
-    }
-
-    public void incrementProblemsAttempted() {
-        problemsAttempted++;
-        DatamanGUI.getInstance().updateScoreDisplay();
-    }
-
-    public void incrementProblemsCorrect() {
-        problemsCorrect++;
-        DatamanGUI.getInstance().updateScoreDisplay();
     }
 
     public void incrementWrongAttempts() {

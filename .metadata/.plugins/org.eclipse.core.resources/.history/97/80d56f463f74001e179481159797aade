@@ -67,7 +67,6 @@ public class DatamanGUI {
         }
         if (command.equals("Number Guesser")) {
             answerChecker.setWaitingForAnswer(false);
-            answerChecker.reset();  // Reset the AnswerChecker state here too
             displayPanel.updateDisplay("=");
             lightIndicator.resetLights();
             return;
